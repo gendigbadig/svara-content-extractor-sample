@@ -34,7 +34,7 @@ async function fetchCoverart(content) {
 async function main() {
   let hasNext = true;
   while (hasNext) {
-    const { data } = await getAllContentById("009950");
+    const { data } = await getAllContentById(process.env.RADIO_ID);
     const { dataList, hasNext: hasNextData } = data;
 
     for (const content of dataList) {
