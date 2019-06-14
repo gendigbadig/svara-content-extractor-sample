@@ -17,8 +17,8 @@ const svaraClient = function(url, opts) {
   );
 };
 
-async function getAllContentById(id) {
-  return svaraClient(`/radios/${id}/contents`);
+async function getAllContentById(id, offset) {
+  return svaraClient(`/radios/${id}/contents?limit=1&offset=${offset}`);
 }
 
 async function fetchAudio(content) {
@@ -33,8 +33,9 @@ async function fetchCoverart(content) {
 
 async function main() {
   let hasNext = true;
+  let offset = 0;
   while (hasNext) {
-    const { data } = await getAllContentById(process.env.RADIO_ID);
+    const { data } = await getAllContentById(process.env.RADIO_ID, offset);
     const { dataList, hasNext: hasNextData } = data;
 
     for (const content of dataList) {
@@ -52,7 +53,9 @@ async function main() {
       );
     }
 
+    console.log(`offset ${offset} done`);
     hasNext = hasNextData;
+    offset += 1;
   }
 }
 
